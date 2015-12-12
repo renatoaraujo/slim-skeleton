@@ -1,0 +1,15 @@
+{
+    "name": "renatoaraujo/phpslim-skelleton",
+    "description": "Skelleton application for PHP Slim Framework",
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/pdo": "~1.9",
+        "slim/twig-view": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "Renato Rodrigues de Araujo",
+            "email": "renato.r.araujo@gmail.com"
+        }
+    ]
+}
