@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>{{ pageTitle }}</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#ID</th>
+      <th>Text</th>
+      <th>Number</th>
+      <th>Registration Status</th>
+      <th>Registration Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  {% for record in records %}
+    <tr>
+      <td>
+        {{ record.sample_id }}
+      </td>
+      <td>
+        {{ record.sample_text }}
+      </td>
+      <td>
+        {{ record.sample_number }}
+      </td>
+      <td>
+        {{ record.sample_regstatus }}
+      </td>
+      <td>
+        {{ record.sample_regdate }}
+      </td>
+      <td>
+        <button class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

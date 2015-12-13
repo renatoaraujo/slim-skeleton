@@ -10,7 +10,8 @@ $container = new \Slim\Container;
 
 $container['view'] = function ($c) {
     $view = new \Slim\Views\Twig(APPPATH . '/app/assets/templates', [
-        'cache' => APPPATH . '/app/cache'
+        // 'cache' => APPPATH . '/app/cache'
+        'cache' => false
     ]);
     $view->addExtension(new \Slim\Views\TwigExtension(
         $c['router'],
