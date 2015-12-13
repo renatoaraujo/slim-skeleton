@@ -1,4 +1,5 @@
 .DS_Store
 composer.lock
-app/cache/
-vendor/
+app/cache/*
+app/config/config.php
+vendor/*

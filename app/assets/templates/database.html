@@ -31,7 +31,8 @@
         {{ record.sample_regdate }}
       </td>
       <td>
-        <button class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
+        <a class="btn btn-default btn-xs" href="/database/{{ record.sample_id }}"><i class="fa fa-search"></i></a>
+        <a class="btn btn-danger btn-xs" onclick="remove_sample({{ record.sample_id }})"><i class="fa fa-times"></i></a>
       </td>
     </tr>
   {% endfor %}

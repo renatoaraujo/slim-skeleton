@@ -29,5 +29,13 @@ class Sample
     return $deleteStatement->execute();
   }
 
+  public function getOne($idSample)
+  {
+    $selectStatement = $this->dbInstance->select()->from(strtolower(get_class($this)))
+      ->where(strtolower(get_class($this)) . '_id', '=', $idSample);
+    $stmt = $selectStatement->execute();
+    return $stmt->fetch();
+  }
+
 
 }

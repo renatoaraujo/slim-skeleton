@@ -15,4 +15,11 @@ class Database
 
     return $sampleModel->deleteOne($idRecord);
   }
+
+  public function getRecord($idSample)
+  {
+    $sampleModel = new Sample();
+
+    return $sampleModel->getOne($idSample);
+  }
 }
