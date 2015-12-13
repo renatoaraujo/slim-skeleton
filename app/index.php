@@ -1,19 +1,26 @@
 <?php
 
+namespace App;
+
+use \Slim\Container;
+use \Slim\App;
+use \Slim\Views\Twig;
+use \Slim\Views\TwigExtension;
+
 define ('APPPATH', realpath('../'));
 
-include_once APPPATH . "/app/config/config.php";
-include_once APPPATH . "/app/config/autoload.php";
-include_once APPPATH . "/vendor/autoload.php";
+require_once(APPPATH . "/app/config/config.php");
+require_once(APPPATH . "/app/config/autoload.php");
+require_once(APPPATH . "/vendor/autoload.php");
 
-$container = new \Slim\Container;
+$container = new Container;
 
 $container['view'] = function ($c) {
-    $view = new \Slim\Views\Twig(APPPATH . '/app/assets/templates', [
-        // 'cache' => APPPATH . '/app/cache'
-        'cache' => false
+    $view = new Twig(APPPATH . '/app/assets/templates', [
+        'cache' => APPPATH . '/app/cache'
+        // 'cache' => false
     ]);
-    $view->addExtension(new \Slim\Views\TwigExtension(
+    $view->addExtension(new TwigExtension(
         $c['router'],
         $c['request']->getUri()
     ));
@@ -21,8 +28,8 @@ $container['view'] = function ($c) {
     return $view;
 };
 
-$app = new \Slim\App($container);
+$app = new App($container);
 
-include_once APPPATH . "/app/config/router.php";
+require_once(APPPATH . "/app/config/router.php");
 
 $app->run();

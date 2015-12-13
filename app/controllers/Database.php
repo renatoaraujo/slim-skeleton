@@ -1,24 +1,28 @@
 <?php
 
+namespace Controllers;
+
+use Models\Sample;
+
 class Database
 {
   public function getRecords()
   {
-    $sampleModel = new Sample();
+    $sampleModel = new Sample;
 
     return $sampleModel->getAll();
   }
 
   public function deleteRecord($idRecord)
   {
-    $sampleModel = new Sample();
+    $sampleModel = new Sample;
 
     return $sampleModel->deleteOne($idRecord);
   }
 
   public function getRecord($idSample)
   {
-    $sampleModel = new Sample();
+    $sampleModel = new Sample;
 
     return $sampleModel->getOne($idSample);
   }
