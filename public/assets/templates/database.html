@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>{{ pageTitle }}</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#ID</th>
+      <th>Text</th>
+      <th>Number</th>
+      <th>Registration Status</th>
+      <th>Registration Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  {% for record in records %}
+    <tr>
+      <td>
+        {{ record.sample_id }}
+      </td>
+      <td>
+        {{ record.sample_text }}
+      </td>
+      <td>
+        {{ record.sample_number }}
+      </td>
+      <td>
+        {{ record.sample_regstatus }}
+      </td>
+      <td>
+        {{ record.sample_regdate }}
+      </td>
+      <td>
+        <a class="btn btn-default btn-xs" href="/database/{{ record.sample_id }}"><i class="fa fa-search"></i></a>
+        <a class="btn btn-danger btn-xs" onclick="remove_sample({{ record.sample_id }})"><i class="fa fa-times"></i></a>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
