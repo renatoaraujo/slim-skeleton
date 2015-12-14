@@ -4,11 +4,13 @@ Simple skelleton for PHP [Slim Framework](https://github.com/slimphp/Slim)
 Not finished but any help are welcome :)
 
 1.
+Clone the repo into your PATH
 ```
 $ git clone https://github.com/renatoaraujo/phpslim-skelleton.git
 ```
 
 2.
+Install all dependencies using [Composer](https://getcomposer.org/)
 ```
 $ composer install
 ```
