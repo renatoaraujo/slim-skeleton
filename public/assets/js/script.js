@@ -3,13 +3,11 @@ $(function() {
     $.ajax({
       url: '/database/' + sample_id,
       type: 'DELETE',
-      statusCode: {
-        404: function() {
+      success: function() {
+        alert("Success! Sample removed!");
+      },
+      error: function() {
           alert("Error, try again.");
-        },
-        200: function() {
-          alert("Success! Sample removed!");
-        }
       }
     });
 
