@@ -1,5 +1,8 @@
 .DS_Store
 composer.lock
-app/cache/*
+app/cache/
 app/config/config.php
-vendor/*
+vendor/
+.buildpath
+.project
+.settings/
