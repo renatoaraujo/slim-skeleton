@@ -1,5 +1,5 @@
-# phpslim-skelleton
-Simple skelleton for PHP [Slim Framework](https://github.com/slimphp/Slim)
+# slim-skeleton
+Simple skelleton for PHP [Slim Framework](https://github.com/slimphp/Slim) I did for myself.
 
 Not finished but any help are welcome :)
 
