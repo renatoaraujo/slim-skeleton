@@ -2,7 +2,7 @@
 
 namespace Models;
 
-use \Slim\PDO\Database;
+use Library\DB;
 
 class Sample
 {
@@ -11,14 +11,14 @@ class Sample
 
   public function __construct()
   {
-    global $config;
-
-    $dbConfig = $config->database;
-
-    $dsn = $dbConfig->db_driver . ':host=' . $dbConfig->db_host . ';dbname=' . $dbConfig->db_name . ';charset=utf8';
-    return $this->dbInstance = new Database($dsn, $dbConfig->db_username, $dbConfig->db_password);
+    return $this->dbInstance = DB::instance();
   }
 
+  /**
+   * Function to get all records from table
+   * @access public
+   * @return array Records
+   */
   public function getAll()
   {
     $selectStatement = $this->dbInstance->select()->from('sample');
@@ -26,11 +26,17 @@ class Sample
     return $stmt->fetchAll();
   }
 
+  /**
+   * Method to logical delete of table
+   * @access public
+   * @param int $idSample Identifier of the table
+   */
   public function deleteOne($idSample)
   {
-    $deleteStatement = $this->dbInstance->delete()->from('sample')
-      ->where('sample_id', '=', $idSample);
-    return $deleteStatement->execute();
+    $updateStatement = $this->dbInstance->update(array('sample_regstatus' => 0))
+                       ->table('sample')
+                       ->where('sample_id', '=', $idSample);
+    return $updateStatement->execute();
   }
 
   public function getOne($idSample)

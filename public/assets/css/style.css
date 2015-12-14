@@ -1,6 +1,7 @@
 body {
   padding-top: 50px;
 }
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
@@ -8,4 +9,12 @@ body {
 
 .center {
   text-align: center;
+}
+
+.fa-active-color {
+  color: green;
+}
+
+.fa-inactive-color {
+  color: red;
 }

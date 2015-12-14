@@ -15,7 +15,8 @@ $container = new Container;
 
 $container['view'] = function ($c) {
     $view = new Twig(APPPATH . '/public/assets/templates', [
-        'cache' => APPPATH . '/cache'
+        // 'cache' => APPPATH . '/cache'
+        'cache' => false
     ]);
     $view->addExtension(new TwigExtension(
         $c['router'],

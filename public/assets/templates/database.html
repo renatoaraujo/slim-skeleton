@@ -2,6 +2,9 @@
 
 {% block body %}
 <h1>{{ pageTitle }}</h1>
+<div>
+  <a class="btn btn-success" href="/database/new">New</a>
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -25,14 +28,20 @@
         {{ record.sample_number }}
       </td>
       <td>
-        {{ record.sample_regstatus }}
+        {% if record.sample_regstatus == 1 %}
+          <i class="fa fa-circle fa-active-color"></i>
+        {% else %}
+          <i class="fa fa-circle fa-inactive-color"></i>
+        {% endif %}
       </td>
       <td>
-        {{ record.sample_regdate }}
+        {{ record.sample_regdate|date('d/m/Y H:i', timezone="Europe/Budapest") }}
       </td>
       <td>
         <a class="btn btn-default btn-xs" href="/database/{{ record.sample_id }}"><i class="fa fa-search"></i></a>
-        <a class="btn btn-danger btn-xs" onclick="remove_sample({{ record.sample_id }})"><i class="fa fa-times"></i></a>
+        {% if record.sample_regstatus == 1 %}
+          <a class="btn btn-danger btn-xs" onclick="remove_sample({{ record.sample_id }})"><i class="fa fa-times"></i></a>
+        {% endif %}
       </td>
     </tr>
   {% endfor %}
