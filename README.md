@@ -2,6 +2,7 @@
 Simple skelleton for PHP [Slim Framework](https://github.com/slimphp/Slim) I did for myself.
 
 Not finished but any help are welcome :)
+Working currently in better router and database layer.
 
 1.
 Clone the repo into your PATH
