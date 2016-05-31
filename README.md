@@ -17,13 +17,10 @@ $ composer install
 ```
 
 3.
-Edit the PATH/src/config/config-example.php with your database configurations and change the name for config.php
+Edit the PATH/src/config/config-example.php with your database configurations and change the name for config.php @@ OBS: DATABASE NOT IMPLEMENTED YET
 
 4.
-To the example just run the script located in PATH/sql/example.sql
-
-5.
-Set up your vhosts for PATH/public or run the command and access by web browser
+Set up your vhosts for slim-skeleton/public or run the following command and access by web browser
 ```
-$ php -S localhost:3000
+$ php -S localhost:3000 public/
 ```
