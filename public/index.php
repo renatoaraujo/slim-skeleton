@@ -1,10 +1,5 @@
 <?php
 
-// ##
-// REMOVE THIS LINE IF YOU ALREADY HAVE THE TIMEZONE CONFIGURED IN YOUR APACHE/NGINX
-// ##
-date_default_timezone_set('America/Sao_Paulo');
-
 use \Slim\Container;
 use \Slim\App;
 use \Slim\Views\Twig;
