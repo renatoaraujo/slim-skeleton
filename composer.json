@@ -1,15 +1,24 @@
 {
-    "name": "renatoaraujo/phpslim-skelleton",
-    "description": "Skelleton application for PHP Slim Framework",
+    "name": "renatoaraujo/slim-skeleton",
+    "description": "Skeleton Application for Slim Framework",
     "require": {
-        "slim/slim": "^3.0",
-        "slim/pdo": "~1.9",
-        "slim/twig-view": "^2.0"
+        "slim/slim": "^3.4",
+        "slim/twig-view": "^2.1",
+        "illuminate/database": "^5.2"
     },
+    "license": "MIT",
     "authors": [
         {
-            "name": "Renato Rodrigues de Araujo",
+            "name": "Renato Araujo",
             "email": "renato.r.araujo@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Skeleton\\Services\\": "src/classes/services/",
+            "Skeleton\\Middleware\\": "src/classes/middlewares/",
+            "Skeleton\\Models\\": "src/classes/models/",
+            "Skeleton\\Controller\\": "src/classes/controllers/"
+        }
+    }
 }
