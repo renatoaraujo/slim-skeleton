@@ -6,3 +6,4 @@ vendor/
 .buildpath
 .project
 .settings/
+logs/

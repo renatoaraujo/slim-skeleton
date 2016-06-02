@@ -1,8 +1,7 @@
-# slim-skeleton
-Simple skelleton for PHP [Slim Framework](https://github.com/slimphp/Slim) I did for myself.
+# Slim Skeleton Application
+Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for personal projects.
 
-Not finished but any help are welcome :)
-Working currently in better router and database layer.
+Any help are welcome.
 
 1.
 Clone the repo into your PATH
@@ -22,5 +21,5 @@ Edit the PATH/src/config/config-example.php with your database configurations an
 4.
 Set up your vhosts for slim-skeleton/public or run the following command and access by web browser
 ```
-$ php -S localhost:3000 public/
+$ php -S localhost:3000
 ```
