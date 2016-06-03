@@ -1,25 +1,42 @@
 # Slim Skeleton Application
 Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for personal projects.
 
-Any help are welcome.
+You can use this skeleton application easily to create your awesome API's or websites.
+You are welcome to collaborate and any suggestions please contact me.
 
-1.
+Used for this project:
+  - [Slim Framework 3](https://github.com/slimphp/Slim)
+  - [Slim Twig View](https://github.com/slimphp/Twig-View)
+  - [Monolog](https://github.com/Seldaek/monolog)
+  - [Doctrine ORM 2](http://www.doctrine-project.org/projects/orm.html)
+
+### Installation
 Clone the repo into your PATH
 ```
 $ git clone https://github.com/renatoaraujo/slim-skeleton.git
 ```
 
-2.
-Install all dependencies using [Composer](https://getcomposer.org/)
+Run the [Composer](https://getcomposer.org/) to install dependencies and create the autoload for application
 ```
 $ composer install
 ```
 
-3.
-Edit the PATH/src/config/config-example.php with your database configurations and change the name for config.php @@ OBS: DATABASE NOT IMPLEMENTED YET
+Create the config file just copying or changing the name of src/config/config-example.php to config.php. Note: in this file you will configure your database connection when it's ready.
 
-4.
-Set up your vhosts for slim-skeleton/public or run the following command and access by web browser
+Go to public/ folder and run the command
 ```
 $ php -S localhost:3000
 ```
+Or create your Nginx/Apache virtual host pointing to /public/index.php
+
+### Development
+
+### Todo
+
+Create a class to start up the application on bootstrap
+
+Create the database layer using Doctrine ORM
+
+Create simple example for register/login and services to get users
+
+Finish the documentation
