@@ -16,11 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Skeleton\\Services\\": "src/classes/services/",
-            "Skeleton\\Middleware\\": "src/classes/middlewares/",
-            "Skeleton\\Models\\": "src/classes/models/",
-            "Skeleton\\Controller\\": "src/classes/controllers/",
-            "Skeleton\\Library\\": "src/classes/libraries/"
+            "Skeleton\\": "src/skeleton/"
         }
     }
 }
