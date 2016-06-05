@@ -12,8 +12,10 @@ use Monolog\Handler\StreamHandler;
  * @uses Monolog\Logger
  * @uses Monolog\Handler\StreamHandler
  * 
+ * @example (new \Skeleton\Library\Debug($param))->setJsonFormat(true)->displayScreen();
+ * 
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
- * @version 1.0.0
+ * @version 1.1.0
  *
  */
 class Debug
@@ -41,6 +43,8 @@ class Debug
         $this->display = "{$path['file']} on line {$path['line']} ";
         
         $this->arr_arguments = $path['args'];
+        
+        return $this;
     }
 
     /**
@@ -50,6 +54,7 @@ class Debug
     public function setLogPath($path)
     {
         $this->logPath = $path;
+        return $this;
     }
 
     /**
@@ -59,6 +64,7 @@ class Debug
     public function setLogName($name)
     {
         $this->logName = $name;
+        return $this;
     }
 
     /**
@@ -68,6 +74,7 @@ class Debug
     public function setJsonFormat($jsonFormat)
     {
         $this->jsonFormat = $jsonFormat;
+        return $this;
     }
 
     /**
@@ -105,7 +112,7 @@ class Debug
      * @param boolean $pretty To print in pretty format or not
      * @return string Json formatted string
      */
-    public function convertToJson($pretty = false)
+    protected function convertToJson($pretty = false)
     {
         $arr_json = [];
         foreach ($this->arr_arguments as $key => $value) {
@@ -122,7 +129,7 @@ class Debug
      * @param mixed $dump Type to buffer
      * @return string
      */
-    public function bufferDump($dump)
+    protected function bufferDump($dump)
     {
         ob_start();
         var_dump($dump);
