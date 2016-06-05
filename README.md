@@ -22,7 +22,7 @@ Run the [Composer](https://getcomposer.org/) to install dependencies and create 
 $ composer install
 ```
 
-Create the config file just copying or changing the name of src/config/config-example.php to config.php. Note: in this file you will configure your database connection when it's ready.
+Create the config file just copying or changing the name of app/config/config-example.php to config.php. Note: in this file you will configure your database connection when it's ready.
 
 Go to public/ folder and run the command
 ```
