@@ -5,7 +5,8 @@
         "slim/slim": "^3.4",
         "slim/twig-view": "^2.1",
         "monolog/monolog": "^1.19",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "filp/whoops": "^2.1"
     },
     "license": "MIT",
     "authors": [
@@ -16,7 +17,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Skeleton\\": "src/skeleton/"
+            "Skeleton\\": "skeleton/src/"
         }
     }
 }

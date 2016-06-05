@@ -9,6 +9,7 @@ Used for this project:
   - [Slim Twig View](https://github.com/slimphp/Twig-View)
   - [Monolog](https://github.com/Seldaek/monolog)
   - [Doctrine ORM 2](http://www.doctrine-project.org/projects/orm.html)
+  - [Whoops](http://filp.github.io/whoops/)
 
 ### Installation
 Clone the repo into your PATH

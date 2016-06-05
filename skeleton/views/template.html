@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="Renato Rodrigues de Araujo">
+      <title>Slim Skeleton Application</title>
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <link href="/css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+      {% block body %}{% endblock %}
+
+    <footer class="center">
+      {% block footer %}
+        {{ "now"|date('Y', timezone="America/Sao_Paulo") }} by <a href="https://hu.linkedin.com/in/renatoraraujo">Renato Araujo</a>.
+      {% endblock %}
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="/js/script.js"></script>
+  </body>
+</html>
