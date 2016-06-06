@@ -4,6 +4,8 @@ Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for
 You can use this skeleton application easily to create your awesome API's or websites.
 You are welcome to collaborate and any suggestions please contact me.
 
+Trello board for development https://trello.com/b/zsOp3dNi
+
 Used for this project:
   - [Slim Framework 3](https://github.com/slimphp/Slim)
   - [Slim Twig View](https://github.com/slimphp/Twig-View)
