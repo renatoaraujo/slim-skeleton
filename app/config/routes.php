@@ -8,12 +8,4 @@ return [
             'function' => 'testing'
         ]
     ],
-    'teste' => [
-        'method' => 'get',
-        'url' => '/teste',
-        'callback' => [
-            'controller' => '\Skeleton\Controller\HomeController',
-            'function' => 'teste'
-        ]
-    ],
 ];

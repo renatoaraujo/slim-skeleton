@@ -13,10 +13,4 @@ class HomeController extends SkeletonController
         $params = [];
         return $this->ci->view->render($response, 'index.html', $params);
     }
-    
-    public function teste(ServerRequestInterface $request, ResponseInterface $response, $args)
-    {
-        $params = [];
-        return $this->ci->view->render($response, 'teste.html', $params);
-    }
 }
