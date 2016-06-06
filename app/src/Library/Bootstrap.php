@@ -36,7 +36,7 @@ class Bootstrap extends App
 
     /**
      * Method to inject the dependencies services on application bootstrap
-     * 
+     *
      * @param array $dependencies
      *            dependencies declared like [name=>service]
      * @return \Skeleton\Library\Bootstrap instance
@@ -47,7 +47,7 @@ class Bootstrap extends App
             foreach ($dependencies as $name => $service) {
                 
                 $name = $this->validateDependencyName($name);
-                $service = $this->validateDependencyService(new $service());
+                $service = $this->validateCallable(new $service());
                 
                 $this->container[$name] = $service;
             }
@@ -57,24 +57,8 @@ class Bootstrap extends App
     }
 
     /**
-     * Method to validate the service called as dependency
-     * 
-     * @param Object $service            
-     * @throws \Exception
-     * @return Object $service
-     */
-    protected function validateDependencyService($service)
-    {
-        if (! is_callable($service)) {
-            throw new \Exception("Error: The service does not exist or is not callable \"{$service}\"");
-        }
-        
-        return $service;
-    }
-
-    /**
      * Method to validate the service name to dependency container
-     * 
+     *
      * @param string $name            
      * @throws \Exception
      * @return string $name
@@ -161,7 +145,7 @@ class Bootstrap extends App
         }
         
         if (array_key_exists('middleware', $route)) {
-            $arr_route['middleware'] = $this->validateMiddleware($route['middleware']);
+            $arr_route['middleware'] = $this->validateCallable(new $route['middleware']());
         }
         
         return $arr_route;
@@ -216,23 +200,37 @@ class Bootstrap extends App
     }
 
     /**
-     * Method to validate Middleware
+     * Method to add generic middlewares for application.
      *
-     * @param mixed $middleware            
-     * @throws \Exception case Middleware does not exists
-     * @return mixed $middleware
+     * @param array $middlewares            
+     *
+     * @todo Create the method to receive array of middlewares and add on application for entire system
      */
-    protected function validateMiddleware($middleware)
+    public function addGenericMiddleware(array $middlewares)
     {
-        if (! empty($middleware) && is_string($middleware)) {
-            if (! class_exists($middleware)) {
-                throw new \Exception("Error: Middleware {$middleware} does not exists");
+        if (is_array($middlewares) && ! empty($middlewares)) {
+            foreach ($middlewares as $middleware) {
+                
+                $middleware = $this->validateCallable(new $middleware());
+                $this->add($middleware);
             }
-        } else 
-            if (is_array($middleware) && ! empty($middleware)) {
-                throw new \Exception("Error: Not suporting multiple Middlewares, what about you contribute with this?");
-            }
+        }
+        return $this;
+    }
+
+    /**
+     * Method to validate the callable object
+     *
+     * @param Object $object            
+     * @throws \Exception
+     * @return Object $object
+     */
+    protected function validateCallable($object)
+    {
+        if (! is_callable($object)) {
+            throw new \Exception("Error: The object does not exist or is not callable \"{$object}\"");
+        }
         
-        return $middleware;
+        return $object;
     }
 }

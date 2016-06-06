@@ -6,7 +6,8 @@
         "slim/twig-view": "^2.1",
         "monolog/monolog": "^1.19",
         "doctrine/orm": "^2.5",
-        "filp/whoops": "^2.1"
+        "filp/whoops": "^2.1",
+        "zeuxisoo/slim-whoops": "^0.5.1"
     },
     "license": "MIT",
     "authors": [

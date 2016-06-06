@@ -9,4 +9,8 @@ return [
         'collation' => 'utf8_general_ci',
         'prefix' => ''
     ],
+    'settings' => [
+        'debug'         => true,
+        'whoops.editor' => 'sublime',
+    ]
 ];
