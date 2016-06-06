@@ -6,11 +6,11 @@ use \Slim\App;
 
 /**
  * Object to bootstrap the application
- * 
+ *
  * @todo PHPDOC of the methods and refactoring of the code to make it understandable
- * 
+ *      
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
- * 
+ *        
  * @version 1.0.0
  */
 class Bootstrap extends App
@@ -21,9 +21,9 @@ class Bootstrap extends App
     protected $_routes;
 
     /**
-     * 
-     * @param array $routes
-     * @param unknown $options
+     *
+     * @param array $routes            
+     * @param unknown $options            
      */
     public function __construct(array $routes, $options = null)
     {
@@ -35,17 +35,62 @@ class Bootstrap extends App
     }
 
     /**
+     * Method to inject the dependencies services on application bootstrap
      * 
-     * @param unknown $name
-     * @param unknown $dependency
+     * @param array $dependencies
+     *            dependencies declared like [name=>service]
+     * @return \Skeleton\Library\Bootstrap instance
      */
-    public function injectDependecy($name, $dependency)
+    public function injectDependecy(array $dependencies)
     {
-        $this->container[$name] = $dependency;
+        if (is_array($dependencies) && ! empty($dependencies)) {
+            foreach ($dependencies as $name => $service) {
+                
+                $name = $this->validateDependencyName($name);
+                $service = $this->validateDependencyService(new $service());
+                
+                $this->container[$name] = $service;
+            }
+        }
+        
+        return $this;
     }
 
     /**
+     * Method to validate the service called as dependency
      * 
+     * @param Object $service            
+     * @throws \Exception
+     * @return Object $service
+     */
+    protected function validateDependencyService($service)
+    {
+        if (! is_callable($service)) {
+            throw new \Exception("Error: The service does not exist or is not callable \"{$service}\"");
+        }
+        
+        return $service;
+    }
+
+    /**
+     * Method to validate the service name to dependency container
+     * 
+     * @param string $name            
+     * @throws \Exception
+     * @return string $name
+     */
+    protected function validateDependencyName($name)
+    {
+        $allowedChars = "/^[a-zA-Z]+$/";
+        
+        if (! preg_match($allowedChars, $name)) {
+            throw new \Exception("Error: Use a simple string without special characters or numbers to name your service. \"{$name}\"");
+        }
+        
+        return $name;
+    }
+
+    /**
      */
     protected function resolve()
     {
@@ -54,7 +99,9 @@ class Bootstrap extends App
             $arr_route = $this->validateRoute($name, $route);
             
             if (isset($arr_route['middleware']) && ! empty($arr_route['middleware'])) {
-                $this->$arr_route['method']($arr_route['url'], "{$arr_route['callback']}")->add($arr_route['middleware'])->setName($name);
+                $this->$arr_route['method']($arr_route['url'], "{$arr_route['callback']}")
+                    ->add($arr_route['middleware'])
+                    ->setName($name);
             } else {
                 $this->$arr_route['method']($arr_route['url'], "{$arr_route['callback']}")->setName($name);
             }
@@ -62,9 +109,9 @@ class Bootstrap extends App
     }
 
     /**
-     * 
-     * @param unknown $name
-     * @param unknown $route
+     *
+     * @param unknown $name            
+     * @param unknown $route            
      * @throws \Exception
      */
     protected function validateRoute($name, $route)
@@ -121,9 +168,9 @@ class Bootstrap extends App
     }
 
     /**
-     * 
-     * @param unknown $callback
-     * @param unknown $name
+     *
+     * @param unknown $callback            
+     * @param unknown $name            
      * @throws \Exception
      */
     protected function validateCallback($callback, $name)
@@ -170,7 +217,8 @@ class Bootstrap extends App
 
     /**
      * Method to validate Middleware
-     * @param mixed $middleware
+     *
+     * @param mixed $middleware            
      * @throws \Exception case Middleware does not exists
      * @return mixed $middleware
      */
@@ -180,11 +228,11 @@ class Bootstrap extends App
             if (! class_exists($middleware)) {
                 throw new \Exception("Error: Middleware {$middleware} does not exists");
             }
-        } else if(is_array($middleware) && !empty($middleware)) {
-            throw new \Exception("Error: Not suporting multiple Middlewares, what about you contribute with this?");
-        }
+        } else 
+            if (is_array($middleware) && ! empty($middleware)) {
+                throw new \Exception("Error: Not suporting multiple Middlewares, what about you contribute with this?");
+            }
         
         return $middleware;
     }
-
 }

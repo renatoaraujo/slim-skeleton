@@ -12,6 +12,8 @@ $whoops->register();
 
 $app = new Skeleton\Library\Bootstrap($routes, $config);
 
-$app->injectDependecy('view', new \Skeleton\Service\TwigViewService());
+$app->injectDependecy([
+    'view' => "\Skeleton\Service\TwigViewService",
+]);
 
 $app->run();
