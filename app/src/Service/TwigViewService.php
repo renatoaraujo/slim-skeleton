@@ -11,7 +11,7 @@ class TwigViewService
 
     public function __invoke(ContainerInterface $ci)
     {
-        $view = new Twig(APPPATH . '/skeleton/views', [
+        $view = new Twig(APPPATH . '/src/views', [
             'cache' => APPPATH . '/cache',
             'auto_reload' => true,
         ]);
