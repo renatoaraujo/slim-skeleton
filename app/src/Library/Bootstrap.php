@@ -3,6 +3,7 @@ namespace Skeleton\Library;
 
 use \Slim\Container;
 use \Slim\App;
+use \Skeleton\Exception\SkeletonException;
 
 /**
  * Object to bootstrap the application
@@ -68,7 +69,7 @@ class Bootstrap extends App
         $allowedChars = "/^[a-zA-Z]+$/";
         
         if (! preg_match($allowedChars, $name)) {
-            throw new \Exception("Error: Use a simple string without special characters or numbers to name your service. \"{$name}\"");
+            throw new SkeletonException("Error: Use a simple string without special characters or numbers to name your service. \"{$name}\"");
         }
         
         return $name;
@@ -105,26 +106,26 @@ class Bootstrap extends App
         if (array_key_exists('method', $route)) {
             $arr_route['method'] = $method = $route['method'];
         } else {
-            throw new \Exception("Error: You need to declare the HTTP method in route {$name}");
+            throw new SkeletonException("Error: You need to declare the HTTP method in route {$name}");
         }
         
         if ($method && $method != 'group') {
             if (array_key_exists('url', $route)) {
                 $arr_route['url'] = $url = $route['url'];
             } else {
-                throw new \Exception("Error: Please specify the URL in route {$name}");
+                throw new SkeletonException("Error: Please specify the URL in route {$name}");
             }
             
             if (array_key_exists('callback', $route)) {
                 $arr_route['callback'] = $this->validateCallback($route['callback'], $name);
             } else {
-                throw new \Exception("Error: you need to declare the callback in route {$name}");
+                throw new SkeletonException("Error: you need to declare the callback in route {$name}");
             }
         } else {
             if (array_key_exists('group', $route)) {
                 $group = $route['group'];
             } else {
-                throw new \Exception("Error: You need to declare the group in array to use this HTTP method {$name}");
+                throw new SkeletonException("Error: You need to declare the group in array to use this HTTP method {$name}");
             }
             
             if ($group && (is_array($group) && ! empty($group))) {
@@ -132,13 +133,13 @@ class Bootstrap extends App
                     if (array_key_exists('url', $g)) {
                         $url = $g['url'];
                     } else {
-                        throw new \Exception("Please specify the URL in group {$key} in route {$name}");
+                        throw new SkeletonException("Please specify the URL in group {$key} in route {$name}");
                     }
                     
                     if (array_key_exists('callback', $g)) {
                         $this->validateCallback($g['callback'], $name);
                     } else {
-                        throw new \Exception("Error: you need to declare the callback in group {$g['key']} in route {$name}");
+                        throw new SkeletonException("Error: you need to declare the callback in group {$g['key']} in route {$name}");
                     }
                 }
             }
@@ -164,13 +165,13 @@ class Bootstrap extends App
             if (array_key_exists('controller', $callback)) {
                 $controller = $callback['controller'];
             } else {
-                throw new \Exception("Error: you need to declare the controller in route {$name}");
+                throw new SkeletonException("Error: you need to declare the controller in route {$name}");
             }
             
             if (array_key_exists('function', $callback)) {
                 $function = $callback['function'];
             } else {
-                throw new \Exception("Error: you need to declare the function in route {$name} or use the callback as string.");
+                throw new SkeletonException("Error: you need to declare the function in route {$name} or use the callback as string.");
             }
             
             if (is_string($controller) && is_string($function)) {
@@ -178,21 +179,21 @@ class Bootstrap extends App
                     if (method_exists($controller, $function)) {
                         $callback = "{$controller}:{$function}";
                     } else {
-                        throw new \Exception("Error: method {$function} inexistent in route {$name}");
+                        throw new SkeletonException("Error: method {$function} inexistent in route {$name}");
                     }
                 } else {
-                    throw new \Exception("Error: callback class not existent in route {$name}");
+                    throw new SkeletonException("Error: callback class not existent in route {$name}");
                 }
             } else {
-                throw new \Exception("Error you need to use string to declare your callback in route {$name}");
+                throw new SkeletonException("Error you need to use string to declare your callback in route {$name}");
             }
         } else {
             if ($callback && (is_string($callback) && ! emtpy($callback))) {
                 if (! class_exists($callback)) {
-                    throw new \Exception("Error: callback class not existent in route {$name}");
+                    throw new SkeletonException("Error: callback class not existent in route {$name}");
                 }
             } else {
-                throw new \Exception("Error: callback need to be declared in route {$name}");
+                throw new SkeletonException("Error: callback need to be declared in route {$name}");
             }
         }
         
@@ -201,10 +202,8 @@ class Bootstrap extends App
 
     /**
      * Method to add generic middlewares for application.
-     *
-     * @param array $middlewares            
-     *
-     * @todo Create the method to receive array of middlewares and add on application for entire system
+     * @param array $middlewares
+     * @return \Skeleton\Library\Bootstrap instance            
      */
     public function addGenericMiddleware(array $middlewares)
     {
@@ -228,7 +227,7 @@ class Bootstrap extends App
     protected function validateCallable($object)
     {
         if (! is_callable($object)) {
-            throw new \Exception("Error: The object does not exist or is not callable \"{$object}\"");
+            throw new SkeletonException("Error: The object does not exist or is not callable \"{$object}\"");
         }
         
         return $object;

@@ -3,7 +3,7 @@ namespace Skeleton\Controller;
 
 use Interop\Container\ContainerInterface;
 
-class SkeletonController
+abstract class AbstractSkeletonController
 {
 
     protected $ci;
