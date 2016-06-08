@@ -4,6 +4,8 @@ namespace Skeleton\Library;
 use \Slim\Container;
 use \Slim\App;
 use \Skeleton\Exception\SkeletonException;
+use \Skeleton\Library\Debug;
+use \ReflectionFunction;
 
 /**
  * Object to bootstrap the application
@@ -11,8 +13,6 @@ use \Skeleton\Exception\SkeletonException;
  * @todo PHPDOC of the methods and refactoring of the code to make it understandable
  *      
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
- *        
- * @version 1.0.0
  */
 class Bootstrap extends App
 {
@@ -48,8 +48,22 @@ class Bootstrap extends App
             foreach ($dependencies as $name => $service) {
                 
                 $name = $this->validateDependencyName($name);
-                $service = $this->validateCallable(new $service());
                 
+                if (is_array($service) && ! empty($service)) {
+                    $dependency = $service['dependency'];
+                    $service = $service['service'];
+                    $service = $this->validateCallable(new $service($this->container[$dependency]));
+                } else {
+                    
+                    if (gettype($service) == 'string') {
+                        $service = $this->validateCallable(new $service());
+                    } else {
+                        if (! (gettype($service) == 'object' && $service instanceof \Closure)) {
+                            throw new SkeletonException("Error: Use only Object as string or Anonymous functions.");
+                        }
+                    }
+                }
+
                 $this->container[$name] = $service;
             }
         }
@@ -61,7 +75,6 @@ class Bootstrap extends App
      * Method to validate the service name to dependency container
      *
      * @param string $name            
-     * @throws \Exception
      * @return string $name
      */
     protected function validateDependencyName($name)
@@ -97,7 +110,6 @@ class Bootstrap extends App
      *
      * @param unknown $name            
      * @param unknown $route            
-     * @throws \Exception
      */
     protected function validateRoute($name, $route)
     {
@@ -202,8 +214,9 @@ class Bootstrap extends App
 
     /**
      * Method to add generic middlewares for application.
-     * @param array $middlewares
-     * @return \Skeleton\Library\Bootstrap instance            
+     *
+     * @param array $middlewares            
+     * @return \Skeleton\Library\Bootstrap instance
      */
     public function addGenericMiddleware(array $middlewares)
     {
@@ -221,7 +234,6 @@ class Bootstrap extends App
      * Method to validate the callable object
      *
      * @param Object $object            
-     * @throws \Exception
      * @return Object $object
      */
     protected function validateCallable($object)

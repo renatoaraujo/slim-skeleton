@@ -13,6 +13,7 @@ class TwigViewService
         $settings = $ci->get('settings');
         $view = new Twig($settings['twig']['view_path'], $settings['twig']['settings']);
         $view->addExtension(new TwigExtension($ci['router'], $ci['request']->getUri()));
+        
         return $view;
     }
 }
