@@ -5,8 +5,8 @@ defined('ROOTPATH') || define('ROOTPATH', dirname(APPPATH));
 
 require_once (ROOTPATH . "/vendor/autoload.php");
 
-$settings = require_once (ROOTPATH . '/app/config/config.php');
-$routes = require_once (ROOTPATH . '/app/config/routes.php');
+$settings = require_once (APPPATH . '/config/config.php');
+$routes = require_once (APPPATH . '/config/routes.php');
 
 $app = new \Skeleton\Library\Bootstrap($routes, $settings);
 

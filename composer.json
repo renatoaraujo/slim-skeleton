@@ -29,8 +29,8 @@
 		"bin-dir": "bin"
 	},
     "scripts": {
-		"post-create-project-cmd": [
-			"php -r \"copy('config/config.example.php', 'config/config.php');\""
+		"post-install-cmd": [
+			"php -r \"copy('app/config/config.example.php', 'app/config/config.php');\""
 		],
 		"test": "./bin/phpunit"
 	}
