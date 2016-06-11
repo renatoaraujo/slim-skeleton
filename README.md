@@ -1,7 +1,6 @@
-[![Build Status](https://travis-ci.org/renatoaraujo/slim-skeleton.svg?branch=master)](https://travis-ci.org/renatoaraujo/slim-skeleton)
-
 # Slim Skeleton Application
 
+[![Build Status](https://travis-ci.org/renatoaraujo/slim-skeleton.svg?branch=master)](https://travis-ci.org/renatoaraujo/slim-skeleton)
 [![Join the chat at https://gitter.im/renatoaraujo/slim-skeleton](https://badges.gitter.im/renatoaraujo/slim-skeleton.svg)](https://gitter.im/renatoaraujo/slim-skeleton?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for personal projects.
 
