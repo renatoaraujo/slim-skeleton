@@ -14,7 +14,7 @@ before_install:
 
 install:
   - composer install
-  - php -r "copy('config/config.example.php', 'config/config.php');"
+  - php -r "copy('app/config/config.example.php', 'app/config/config.php');"
 
 script:
   - phpunit
