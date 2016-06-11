@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/renatoaraujo/slim-skeleton.svg?branch=master)](https://travis-ci.org/renatoaraujo/slim-skeleton)
+
 # Slim Skeleton Application
 Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for personal projects.
 
