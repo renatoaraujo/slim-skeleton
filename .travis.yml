@@ -9,7 +9,7 @@ php:
 sudo: false
 
 env:
-  - APP_ENV=testing
+  - APPLICATION_ENV=testing
 
 before_install:
   - composer self-update
@@ -17,3 +17,6 @@ before_install:
 install:
   - composer install
   - php -r "copy('config/config.example.php', 'config/config.php');"
+
+script:
+  - phpunit

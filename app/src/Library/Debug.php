@@ -15,7 +15,7 @@ use Monolog\Handler\StreamHandler;
  * @example (new \Skeleton\Library\Debug($param))->setJsonFormat(true)->displayScreen();
  * 
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
- * @version 1.1.0
+ * @version 1.2.0
  *
  */
 class Debug
@@ -71,9 +71,9 @@ class Debug
      * Method to define the json format for the output
      * @param boolean $jsonFormat
      */
-    public function setJsonFormat($jsonFormat)
+    public function setJsonFormat()
     {
-        $this->jsonFormat = $jsonFormat;
+        $this->jsonFormat = true;
         return $this;
     }
 
@@ -93,7 +93,7 @@ class Debug
     /**
      * Method to display the debug content on screen
      */
-    public function displayScreen()
+    public function displayScreen($endApplication = true)
     {
         if($this->jsonFormat) {
             $this->display .= "<pre>{$this->convertToJson(true)}</pre>";
@@ -102,6 +102,24 @@ class Debug
                 $this->display .= '<br/><br/><b style="color:red;">Argument ' . ($key + 1) . '</b><br />';
                 $this->display .= '<pre>' . $this->bufferDump($value) . '</pre>';
             }
+        }
+        
+        if($endApplication) {
+            $display = die($this->display);
+        } else {
+            $display = $this->display;
+        }
+        
+        return $display;
+    }
+    
+    public function displayTerminal()
+    {
+
+        $this->display .= "\n";
+        
+        foreach ($this->arr_arguments as $key => $value) {
+            $this->display .= $this->bufferDump($value);
         }
         
         return die($this->display);

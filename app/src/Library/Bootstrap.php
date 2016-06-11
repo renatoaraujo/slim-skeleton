@@ -54,7 +54,6 @@ class Bootstrap extends App
                     $service = $service['service'];
                     $service = $this->validateCallable(new $service($this->container[$dependency]));
                 } else {
-                    
                     if (gettype($service) == 'string') {
                         $service = $this->validateCallable(new $service());
                     } else {

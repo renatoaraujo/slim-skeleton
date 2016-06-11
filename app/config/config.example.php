@@ -4,10 +4,10 @@ return [
         'doctrine' => [
             'meta' => [
                 'entity_path' => [
-                    APPPATH . '/app/src/Model/Entity'
+                    APPPATH . '/src/Model/Entity'
                 ],
                 'auto_generate_proxies' => true,
-                'proxy_dir' => APPPATH . '/cache/proxies',
+                'proxy_dir' => ROOTPATH . '/cache/proxies',
                 'cache' => null
             ],
             'connection' => [
@@ -19,14 +19,14 @@ return [
             ]
         ],
         'twig' => [
-            'view_path' => APPPATH . '/app/views',
+            'view_path' => APPPATH . '/views',
             'settings' => [
-                'path' => APPPATH . '/cache',
+                'path' => ROOTPATH . '/cache',
                 'auto_reload' => true
             ]
         ],
         'monolog' => [
-            'log_file_path' => APPPATH . '/logs'
+            'log_file_path' => ROOTPATH . '/logs'
         ]
     ]
 ];
