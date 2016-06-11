@@ -1,5 +1,5 @@
 <?php
-define('APPPATH', realpath('../'));
+defined('APPPATH') || define('APPPATH', dirname(__DIR__));
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
 require_once (APPPATH . "/vendor/autoload.php");
