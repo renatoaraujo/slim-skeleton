@@ -1,5 +1,5 @@
 <?php
-define('APPPATH', realpath('./'));
+defined('APPPATH') || define('APPPATH', dirname(__DIR__));
 require_once (APPPATH . "/vendor/autoload.php");
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
