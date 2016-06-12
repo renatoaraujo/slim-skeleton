@@ -4,7 +4,7 @@ return [
         'doctrine' => [
             'meta' => [
                 'entity_path' => [
-                    APPPATH . '/src/Model/Entity'
+                    ROOTPATH . '/app/src/Model/Entity'
                 ],
                 'auto_generate_proxies' => true,
                 'proxy_dir' => ROOTPATH . '/cache/proxies',
@@ -26,7 +26,8 @@ return [
             ]
         ],
         'monolog' => [
-            'log_file_path' => ROOTPATH . '/logs'
+            'log_file_path' => ROOTPATH . '/logs',
+            'log_error' => ROOTPATH . '/logs/' . date('Ymd') . '-error-log.log'
         ]
     ]
 ];
