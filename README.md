@@ -29,22 +29,13 @@ Run the [Composer](https://getcomposer.org/) to install dependencies and create 
 $ composer install
 ```
 
-Create the settings file just copying or changing the name of app/settings/settings.example.php to settings.php. Note: in this file you will settingsure your database connection when it's ready.
+Update the config.php located at app/config/config.php with your database connection parameters and run the doctrine to create schema
+```
+$ php ./bin/doctrine orm:schema-tool:create
+```
 
 Go to public/ folder and run the command
 ```
 $ php -S localhost:3000
 ```
 Or create your Nginx/Apache virtual host pointing to /public/index.php
-
-### Development
-
-### Todo
-
-Create a class to start up the application on bootstrap
-
-Create the database layer using Doctrine ORM
-
-Create simple example for register/login and services to get users
-
-Finish the documentation
