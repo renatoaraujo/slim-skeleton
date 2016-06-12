@@ -34,6 +34,11 @@ class UserEntity
     protected $password;
 
     /**
+     * @ORM\Column(type="string", length=16)
+     */
+     protected $pubUniqueId;
+
+    /**
      * Get array copy of object
      *
      * @return array
@@ -81,5 +86,14 @@ class UserEntity
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     *
+     * @ORM\return string
+     */
+    public function getPubUniqueId()
+    {
+        return $this->pubUniqueId;
     }
 }

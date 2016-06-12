@@ -14,6 +14,10 @@ $app->injectDependecy([
   'view' => '\Skeleton\Service\TwigViewService',
   'em' => '\Skeleton\Service\DoctrineORMService',
   'logger' => '\Skeleton\Service\MonologService',
+  'userService' => [
+    'service' => '\Skeleton\Service\UserService',
+    'dependency' => 'em',
+  ],
   'errorHandler' => function($c) {
     return function ($request, $response, $exception) use ($c) {
 
@@ -22,9 +26,9 @@ $app->injectDependecy([
       $params = [];
 
       if (APPLICATION_ENV === 'development' || APPLICATION_ENV === 'testing') {
-          $params = [
-            'error' => $exception->getMessage(),
-          ];
+        $params = [
+          'error' => $exception->getMessage(),
+        ];
       }
 
       return $c['view']->render($response, '500.html', $params)
