@@ -17,4 +17,13 @@ class UserController extends AbstractSkeletonController
 
     return $render;
   }
+
+  public function fetchOne(ServerRequestInterface $request, ResponseInterface $response, $args)
+  {
+    $user = $this->ci->userService->get($args['pubUniqueId']);
+    $render = $response->withHeader('Content-type', 'application/json');
+    $render = $response->withJson($user);
+
+    return $render;
+  }
 }
