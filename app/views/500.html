@@ -1,11 +1,14 @@
 {% extends "template.html" %}
 {% block body %}
-  <div class="center">
-    <h1>404 Not Found</h1>
-    <p>
+<div class="center">
+  <h1>HTTP 500 Internal server error</h1>
+  <p>
     There is an error on our server, please try again in few minutes.
     <br />
     <a href="/">Back to home</a>
-    </p>
-  </div>
+  </p>
+  {% if error %}
+    <p>{{ error }}</p>
+  {% endif %}
+</div>
 {% endblock %}
