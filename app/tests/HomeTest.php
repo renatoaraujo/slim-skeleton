@@ -7,7 +7,7 @@ class HomeTest extends IntegrationTestCase
 {
 
     public function testHomePage()
-    { 
+    {
         $res = $this->call('GET', '/');
         $this->assertSame('1.1', $res->getProtocolVersion());
         $this->assertSame(200, $res->getStatusCode());

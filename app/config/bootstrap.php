@@ -11,25 +11,38 @@ $routes = require_once (APPPATH . '/config/routes.php');
 $app = new \Skeleton\Library\Bootstrap($routes, $settings);
 
 $app->injectDependecy([
-    'view' => '\Skeleton\Service\TwigViewService',
-    'em' => '\Skeleton\Service\DoctrineORMService',
-    'logger' => '\Skeleton\Service\MonologService',
-    // 'errorHandler' => [
-    // 'service' => '\Skeleton\Handler\ErrorHandler',
-    // 'dependency' => 'logger'
-    // ],
-    'notFoundHandler' => function ($c) {
-        return function ($request, $response) use ($c) {
-            return $c['view']->render($response, '404.html', [])
-                ->withStatus(404);
-        };
-    }
+  'view' => '\Skeleton\Service\TwigViewService',
+  'em' => '\Skeleton\Service\DoctrineORMService',
+  'logger' => '\Skeleton\Service\MonologService',
+  'errorHandler' => function($c) {
+    return function ($request, $response, $exception) use ($c) {
+
+      $c['logger']->critical($exception->getMessage());
+
+      $params = [];
+
+      if (APPLICATION_ENV === 'development' || APPLICATION_ENV === 'testing') {
+          $params = [
+            'error' => $exception->getMessage(),
+          ];
+      }
+
+      return $c['view']->render($response, '500.html', $params)
+      ->withStatus(500);
+    };
+  },
+  'notFoundHandler' => function ($c) {
+    return function ($request, $response) use ($c) {
+      return $c['view']->render($response, '404.html', [])
+      ->withStatus(404);
+    };
+  }
 ]);
 
 if (APPLICATION_ENV === 'development' || APPLICATION_ENV === 'testing') {
-    $app->addGenericMiddleware([
-        '\Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware'
-    ]);
+  $app->addGenericMiddleware([
+    '\Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware'
+  ]);
 }
 
 return $app;

@@ -13,11 +13,11 @@ class MonologService
     {
         $settings = $ci->get('settings');
         $logger = new Logger('logger');
-        
-        $stream = new StreamHandler($settings['monolog']['log_file_path'], Logger::DEBUG);
+
+        $stream = new StreamHandler($settings['monolog']['log_error'], Logger::DEBUG);
         $fingersCrossed = new FingersCrossedHandler($stream, Logger::ERROR);
         $logger->pushHandler($fingersCrossed);
-        
+
         return $logger;
     }
 }
