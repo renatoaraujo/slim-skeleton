@@ -1,11 +1,10 @@
 <?php
 namespace Skeleton\Model\Entity;
 
-use App\Entity;
-use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Skeleton\Model\Repository\UserRepository")
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})}))
  */
 class UserEntity
@@ -36,7 +35,7 @@ class UserEntity
     /**
      * @ORM\Column(type="string", length=16)
      */
-     protected $pubUniqueId;
+    protected $pubUniqueId;
 
     /**
      * Get array copy of object

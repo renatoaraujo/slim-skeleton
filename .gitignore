@@ -8,3 +8,4 @@ vendor/
 .settings/
 logs/
 bin/
+.idea/
