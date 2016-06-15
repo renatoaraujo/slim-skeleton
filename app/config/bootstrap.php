@@ -28,6 +28,7 @@ $app->injectDependecy([
       if (APPLICATION_ENV === 'development' || APPLICATION_ENV === 'testing') {
         $params = [
           'error' => $exception->getMessage(),
+          'status' => '500 Internal server error'
         ];
       }
 
@@ -37,7 +38,10 @@ $app->injectDependecy([
   },
   'notFoundHandler' => function ($c) {
     return function ($request, $response) use ($c) {
-      return $c['view']->render($response, '404.html', [])
+      $params = [
+        'status' => '404 not found',
+      ];
+      return $c['view']->render($response, '404.html', $params)
       ->withStatus(404);
     };
   }

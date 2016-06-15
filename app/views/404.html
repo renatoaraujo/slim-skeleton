@@ -1,13 +1,21 @@
-{% extends "template.html" %}
+{% extends "error-template.html" %}
 {% block body %}
-<div class="body-content">
-    <div class="center">
-        <h1>404 Not Found</h1>
-        <p>
-            The page you requested does not exist or were moved to another URL.
-            <br/>
-            <a href="/">Back to home</a>
-        </p>
+<div class="content">
+    <div class="ui two column middle aligned very relaxed stackable grid">
+        <div class="column s-icon">
+            <i class="fa fa-map-signs"></i>
+        </div>
+        <div class="ui vertical divider">
+            Error
+        </div>
+        <div class="column s-text">
+            <h1>404 Not Found</h1>
+            <p>
+                The page you requested does not exist or were moved to another URL.
+                <br/>
+                <a href="/">Back to home</a>
+            </p>
+        </div>
     </div>
 </div>
 {% endblock %}
