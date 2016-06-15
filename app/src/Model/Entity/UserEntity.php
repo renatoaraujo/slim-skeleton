@@ -12,28 +12,28 @@ class UserEntity
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="userId", type="integer")
+     * @ORM\Column(name="user_id", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $userId;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="full_name", type="string", length=100, nullable=false)
      */
     protected $fullName;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=150, nullable=false)
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=false)
      */
     protected $password;
 
     /**
-     * @ORM\Column(type="string", length=16)
+     * @ORM\Column(name="pub_unique_id", type="string", length=36, nullable=false)
      */
     protected $pubUniqueId;
 
@@ -95,4 +95,37 @@ class UserEntity
     {
         return $this->pubUniqueId;
     }
+
+    /**
+     * @param mixed $fullName
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @param mixed $pubUniqueId
+     */
+    public function setPubUniqueId($pubUniqueId)
+    {
+        $this->pubUniqueId = $pubUniqueId;
+    }
+
 }
