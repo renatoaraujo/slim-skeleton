@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
 <div class="ui large top fixed hidden menu">
     <div class="ui container">
         <a href="/" class="{{ route == 'home' ? 'active' }} item">Home</a>
@@ -44,7 +43,7 @@
 {% block body %}{% endblock %}
 
 {% block footer %}
-<div class="ui inverted vertical footer segment">
+<footer class="ui inverted vertical footer segment">
     <div class="ui container">
         <div class="ui stackable inverted divided equal height stackable grid">
             <div class="three wide column">
@@ -58,7 +57,7 @@
             </div>
         </div>
     </div>
-</div>
+</footer>
 {% endblock %}
 
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>

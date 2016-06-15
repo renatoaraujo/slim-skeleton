@@ -21,3 +21,7 @@ h1.headtitle {
         margin: 80px 0;
     }
 }
+
+#signinup-content > .grid > .column {
+    max-width: 450px;
+}
