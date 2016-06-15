@@ -5,6 +5,13 @@ body {
 .content h1 {
     color: #B6B6B6;
     font-size: 60px !important;
+    margin: 0;
+}
+
+.content h2 {
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
 }
 
 .content i.fa {

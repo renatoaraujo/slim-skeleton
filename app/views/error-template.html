@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Renato Rodrigues de Araujo">
-    <title>{{ status }} - Slim Skeleton Application</title>
+    <title>{{ status.error }} - Slim Skeleton Application</title>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700'
           type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css"
@@ -17,6 +17,7 @@
 <body>
 {% block body %}{% endblock %}
 {% block footer %}
+
 <footer class="ui vertical footer segment">
     <div class="ui container">
         <div class="ui stackable inverted divided equal height stackable grid">
@@ -29,6 +30,7 @@
         </div>
     </div>
 </footer>
+
 {% endblock %}
 </body>
 </html>
