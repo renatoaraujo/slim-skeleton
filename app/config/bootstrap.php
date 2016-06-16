@@ -65,10 +65,4 @@ $app->injectDependecy([
     },
 ]);
 
-if (APPLICATION_ENV === 'development' || APPLICATION_ENV === 'testing') {
-    $app->addGenericMiddleware([
-        '\Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware'
-    ]);
-}
-
 return $app;
