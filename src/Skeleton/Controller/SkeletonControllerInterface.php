@@ -8,4 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 interface SkeletonControllerInterface
 {
     public function init(ServerRequestInterface $request, ResponseInterface $response, $args);
+
+    public function defaultAction();
 }

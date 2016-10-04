@@ -115,11 +115,52 @@ abstract class SkeletonController implements SkeletonControllerInterface
     }
 
     /**
+     * getArg
+     * @param $arg
+     * @return mixed
+     */
+    public function getArg($arg)
+    {
+        if (!empty($this->args)) {
+            return $this->args[$arg];
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Args
      * @param args $args
      */
     public function setArgs($args)
     {
         $this->args = $args;
+        return $this;
+    }
+
+    /**
+     * init
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param $args
+     * @return void
+     */
+    public function init(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->setRequest($request);
+        $this->setReponse($response);
+        $this->setArgs($args);
+
+        if($this->getArg('method')) {
+            $method = $this->getArg('method') . 'Action';
+            if(method_exists($this, $method)) {
+                $this->$method();
+            } else {
+                return $this->getResponse()->withStatus(404);
+            }
+        } else {
+            $this->defaultAction();
+        }
+
     }
 }

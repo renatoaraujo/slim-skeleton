@@ -1,6 +1,7 @@
 <?php
 namespace Skeleton\Utils;
 
+use Doctrine\Common\Util\Debug;
 use Slim\Container;
 use Slim\App;
 use Skeleton\Exception\SkeletonException;
@@ -103,7 +104,8 @@ class Bootstrap extends App
                     ->add($arr_route['middleware'])
                     ->setName($name);
             } else {
-                $this->$arr_route['method']($arr_route['url'], "{$arr_route['callback']}")->setName($name);
+                $method = $arr_route['method'];
+                $this->$method($arr_route['url'], "{$arr_route['callback']}")->setName($name);
             }
         }
     }
