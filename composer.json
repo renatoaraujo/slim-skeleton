@@ -1,27 +1,31 @@
 {
-    "name": "renatoaraujo/slim-skeleton",
-    "description": "Skeleton Application for Slim Framework",
-    "authors": [
-        {
-            "name": "Renato Araujo",
-            "email": "renato.r.araujo@gmail.com",
-            "role": "Software Engineer"
-        }
-    ],
-    "require": {
-        "slim/slim": "^3.4",
-        "monolog/monolog": "^1.19",
-        "doctrine/orm": "^2.5",
-        "rcastera/session": "^1.0"
-    },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Skeleton\\": "src/Skeleton"
-        }
-    },
-    "scripts": {
-		"test": "./bin/phpunit",
-        "serve": "php -S 0.0.0.0:8080 -t public/"
-	}
+  "name": "renatoaraujo/slim-skeleton",
+  "description": "Skeleton Application for Slim Framework",
+  "authors": [
+    {
+      "name": "Renato Araujo",
+      "email": "renato.r.araujo@gmail.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "^3.4",
+    "monolog/monolog": "^1.19",
+    "doctrine/orm": "^2.5"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Skeleton\\": "src/Skeleton"
+    }
+  },
+  "scripts": {
+    "test": "./bin/phpunit",
+    "serve": "php -S 0.0.0.0:8080 -t public/"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.5"
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
 }

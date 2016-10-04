@@ -1,12 +1,4 @@
 .DS_Store
-composer.lock
-cache/
-app/config/config.php
 vendor/
-.buildpath
-.project
-.settings/
-logs/
 bin/
 .idea/
-scripts/
