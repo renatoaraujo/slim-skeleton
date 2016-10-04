@@ -1,13 +1,25 @@
 {
   "name": "renatoaraujo/slim-skeleton",
   "description": "Skeleton Application for Slim Framework",
+  "homepage": "http://github.com/renatoaraujo/slim-skeleton",
+  "version": "0.5.0-dev",
+  "minimum-stability": "dev",
+  "type": "library",
+  "keywords": [
+    "microframework",
+    "Slim Framework",
+    "DoctrineORM",
+    "Twig",
+    "Monolog"
+  ],
   "authors": [
     {
-      "name": "Renato Araujo",
+      "name": "Renato Rodrigues de Araujo",
       "email": "renato.r.araujo@gmail.com"
     }
   ],
   "require": {
+    "php": ">=5.6",
     "slim/slim": "^3.4",
     "monolog/monolog": "^1.19",
     "doctrine/orm": "^2.5"
@@ -18,9 +30,13 @@
       "Skeleton\\": "src/Skeleton"
     }
   },
+  "autoload-dev": {
+      "psr-4": {
+        "Skeleton\\": "tests/Skeleton"
+      }
+  },
   "scripts": {
-    "test": "./bin/phpunit",
-    "serve": "php -S 0.0.0.0:8080 -t public/"
+    "test": "./bin/phpunit"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.5"
