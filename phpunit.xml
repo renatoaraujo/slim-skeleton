@@ -11,8 +11,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         bootstrap="tests/bootstrap.php">
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="Debug Test Suite">
             <directory suffix="Test.php">tests/</directory>
