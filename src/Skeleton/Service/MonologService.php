@@ -1,10 +1,10 @@
 <?php
 namespace Skeleton\Service;
 
-use \Interop\Container\ContainerInterface;
-use \Monolog\Handler\StreamHandler;
-use \Monolog\Logger;
-use \Monolog\Handler\FingersCrossedHandler;
+use Interop\Container\ContainerInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Handler\FingersCrossedHandler;
 
 class MonologService
 {
