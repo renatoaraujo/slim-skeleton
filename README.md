@@ -14,24 +14,11 @@ Used for this project:
   - [Doctrine ORM 2](http://www.doctrine-project.org/projects/orm.html)
 
 ### Installation
-Clone the repo into your PATH
+Update composer.json schema with
 ```
-$ git clone https://github.com/renatoaraujo/slim-skeleton.git
+"renatoaraujo/slim-skeleton": "dev-master"
 ```
-
-Run the [Composer](https://getcomposer.org/) to install dependencies and create the autoload for application
+or
 ```
-$ composer install
+$ composer require renatoaraujo/slim-skeleton
 ```
-
-Update the config.php located at app/config/config.php with your database connection parameters and run the doctrine to create schema
-```
-$ php ./bin/doctrine orm:schema-tool:create
-```
-
-Run the application using composer
-```
-$ composer serve
-```
-
-Or create your Nginx/Apache virtual host pointing to /public/index.php
