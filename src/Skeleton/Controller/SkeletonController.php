@@ -3,12 +3,15 @@
 namespace Skeleton\Controller;
 
 use Interop\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Skeleton\Exception\SkeletonException;
 
 /**
- * Class SkeletonController
+ * Skeleton Controller
  * @package Skeleton\Controller
+ * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
  */
 abstract class SkeletonController implements SkeletonControllerInterface
 {
@@ -19,24 +22,19 @@ abstract class SkeletonController implements SkeletonControllerInterface
     protected $ci;
 
     /**
-     * @var array
+     * @var ServerRequestInterface $request
      */
-    protected $params = [];
+    private $request;
 
     /**
-     * @var  request
+     * @var ResponseInterface $response
      */
-    protected $request;
+    private $response;
 
     /**
-     * @var  response
+     * @var $urlParams
      */
-    protected $response;
-
-    /**
-     * @var  args
-     */
-    protected $args;
+    protected $urlParams;
 
     /**
      * AbstractSkeletonController constructor.
@@ -45,24 +43,6 @@ abstract class SkeletonController implements SkeletonControllerInterface
     public function __construct(ContainerInterface $ci)
     {
         $this->ci = $ci;
-    }
-
-    /**
-     *
-     * @param string|int $key
-     * @param mixed $value
-     */
-    public function setParams($key, $value)
-    {
-        $this->params[$key] = $value;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->params;
     }
 
     /**
@@ -106,35 +86,28 @@ abstract class SkeletonController implements SkeletonControllerInterface
     }
 
     /**
-     * Args
-     * @return args
+     * getUrlParams
+     * @param null $param
+     * @return bool
      */
-    public function getArgs()
+    public function getUrlParams($param = null)
     {
-        return $this->args;
-    }
+        $return = false;
 
-    /**
-     * getArg
-     * @param $arg
-     * @return mixed
-     */
-    public function getArg($arg)
-    {
-        if (!empty($this->args)) {
-            return $this->args[$arg];
+        if (!is_null($param)) {
+            if (!empty($this->urlParams)) {
+                $return = isset($this->urlParams[$param]) ? $this->urlParams[$param] : false;
+            }
         } else {
-            return false;
+            $return = $this->urlParams;
         }
+
+        return $return;
     }
 
-    /**
-     * Args
-     * @param args $args
-     */
-    public function setArgs($args)
+    public function setUrlParams(array $params)
     {
-        $this->args = $args;
+        $this->urlParams = $params;
         return $this;
     }
 
@@ -142,25 +115,34 @@ abstract class SkeletonController implements SkeletonControllerInterface
      * init
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @param $args
-     * @return void
+     * @param $urlParams
+     * @return ResponseInterface
+     * @throws SkeletonException
      */
-    public function init(ServerRequestInterface $request, ResponseInterface $response, $args)
+    public function init(ServerRequestInterface $request, ResponseInterface $response, $urlParams)
     {
         $this->setRequest($request);
         $this->setReponse($response);
-        $this->setArgs($args);
+        $this->setUrlParams($urlParams);
 
-        if($this->getArg('method')) {
-            $method = $this->getArg('method') . 'Action';
-            if(method_exists($this, $method)) {
-                $this->$method();
+        $method = $this->getUrlParams('method');
+
+        if ((bool) $method) {
+            $method = $this->getUrlParams('method') . 'Action';
+            if (method_exists($this, $method)) {
+                $called = $this->$method();
+
+                if (!$called instanceof ResponseInterface) {
+                    throw new SkeletonException('The method MUST resturn ResponseInteface instance');
+                }
+
             } else {
-                return $this->getResponse()->withStatus(404);
+                $this->response = $this->getResponse()->withStatus(404);
             }
         } else {
             $this->defaultAction();
         }
 
+        return $this->response;
     }
 }
