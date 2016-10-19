@@ -1,15 +1,11 @@
 <?php
 namespace Skeleton\Utils;
 
-use Doctrine\Common\Util\Debug;
-use Slim\Container;
 use Slim\App;
 use Skeleton\Exception\SkeletonException;
 
 /**
  * Object to bootstrap the application
- *
- * @todo PHPDOC of the methods and refactoring of the code to make it understandable
  *
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
  */
@@ -121,48 +117,46 @@ class Bootstrap extends App
     {
         $arr_route = [];
 
-        if (array_key_exists('method', $route)) {
-            $arr_route['method'] = $method = $route['method'];
-        } else {
+        if (!array_key_exists('method', $route)) {
             throw new SkeletonException("Error: You need to declare the HTTP method in route {$name}");
         }
 
+        $arr_route['method'] = $method = $route['method'];
+
         if ($method && $method != 'group') {
-            if (array_key_exists('url', $route)) {
-                $arr_route['url'] = $url = $route['url'];
-            } else {
+            if (!array_key_exists('url', $route)) {
                 throw new SkeletonException("Error: Please specify the URL in route {$name}");
             }
 
-            if (array_key_exists('callback', $route)) {
-                $arr_route['callback'] = $this->validateCallback($route['callback'], $name);
-            } else {
+            if (!array_key_exists('callback', $route)) {
                 throw new SkeletonException("Error: you need to declare the callback in route {$name}");
             }
+
+            $arr_route['url'] = $url = $route['url'];
+            $arr_route['callback'] = $this->validateCallback($route['callback'], $name);
         } else {
-            if (array_key_exists('group', $route)) {
-                $group = $route['group'];
-            } else {
+            if (!array_key_exists('group', $route)) {
                 throw new SkeletonException(
                     "Error: You need to declare the group in array to use this HTTP method {$name}"
                 );
             }
 
+            $group = $route['group'];
+
             if ($group && (is_array($group) && !empty($group))) {
                 foreach ($group as $key => $value) {
-                    if (array_key_exists('url', $g)) {
-                        $url = $g['url'];
-                    } else {
+                    if (!array_key_exists('url', $value)) {
                         throw new SkeletonException("Please specify the URL in group {$key} in route {$name}");
                     }
 
-                    if (array_key_exists('callback', $g)) {
-                        $this->validateCallback($g['callback'], $name);
-                    } else {
+                    if (!array_key_exists('callback', $value)) {
                         throw new SkeletonException(
-                            "Error: you need to declare the callback in group {$g['key']} in route {$name}"
+                            "Error: you need to declare the callback in group {$value['key']} in route {$name}"
                         );
                     }
+
+                    $url = $value['url'];
+                    $this->validateCallback($value['callback'], $name);
                 }
             }
         }
@@ -183,43 +177,36 @@ class Bootstrap extends App
      */
     protected function validateCallback($callback, $name)
     {
-        if ($callback && (!empty($callback) && is_array($callback))) {
-            if (array_key_exists('controller', $callback)) {
-                $controller = $callback['controller'];
-            } else {
-                throw new SkeletonException("Error: you need to declare the controller in route {$name}");
-            }
-
-            if (array_key_exists('function', $callback)) {
-                $function = $callback['function'];
-            } else {
-                throw new SkeletonException(
-                    "Error: you need to declare the function in route {$name} or use the callback as string."
-                );
-            }
-
-            if (is_string($controller) && is_string($function)) {
-                if (class_exists($controller)) {
-                    if (method_exists($controller, $function)) {
-                        $callback = "{$controller}:{$function}";
-                    } else {
-                        throw new SkeletonException("Error: method {$function} inexistent in route {$name}");
-                    }
-                } else {
-                    throw new SkeletonException("Error: callback class not existent in route {$name}");
-                }
-            } else {
-                throw new SkeletonException("Error you need to use string to declare your callback in route {$name}");
-            }
-        } else {
-            if ($callback && (is_string($callback) && !emtpy($callback))) {
-                if (!class_exists($callback)) {
-                    throw new SkeletonException("Error: callback class not existent in route {$name}");
-                }
-            } else {
-                throw new SkeletonException("Error: callback need to be declared in route {$name}");
-            }
+        if (!$callback && !(is_string($callback) && emtpy($callback))) {
+            throw new SkeletonException("Error: callback need to be declared in route {$name}");
         }
+
+        if (!array_key_exists('controller', $callback)) {
+            throw new SkeletonException("Error: you need to declare the controller in route {$name}");
+        }
+
+        if (!array_key_exists('function', $callback)) {
+            throw new SkeletonException(
+                "Error: you need to declare the function in route {$name} or use the callback as string."
+            );
+        }
+
+        $controller = $callback['controller'];
+        $function = $callback['function'];
+
+        if (!is_string($controller) && !is_string($function)) {
+            throw new SkeletonException("Error you need to use string to declare your callback in route {$name}");
+        }
+
+        if (!class_exists($controller)) {
+            throw new SkeletonException("Error: callback class not existent in route {$name}");
+        }
+
+        if (!method_exists($controller, $function)) {
+            throw new SkeletonException("Error: method {$function} inexistent in route {$name}");
+        }
+
+        $callback = "{$controller}:{$function}";
 
         return $callback;
     }
@@ -248,7 +235,6 @@ class Bootstrap extends App
      */
     protected function validateCallable($object)
     {
-
         $class_name = get_class($object);
 
         if (!is_callable($object) && !class_exists($class_name)) {
