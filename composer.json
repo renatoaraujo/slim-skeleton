@@ -2,8 +2,6 @@
   "name": "renatoaraujo/slim-skeleton",
   "description": "Skeleton Application for Slim Framework",
   "homepage": "http://github.com/renatoaraujo/slim-skeleton",
-  "version": "0.5.0-dev",
-  "minimum-stability": "dev",
   "type": "library",
   "keywords": [
     "microframework",
@@ -22,7 +20,8 @@
     "php": ">=5.6",
     "slim/slim": "^3.4",
     "monolog/monolog": "^1.19",
-    "doctrine/orm": "^2.5"
+    "doctrine/orm": "^2.5",
+    "ramsey/uuid-doctrine": "^1.2"
   },
   "license": "MIT",
   "autoload": {
