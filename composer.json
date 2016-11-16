@@ -41,5 +41,8 @@
   },
   "config": {
     "bin-dir": "bin"
+  },
+  "suggest": {
+    "slim/twig-view": "Allow to handle easly with interfaces. Required to TwigViewService."
   }
 }
