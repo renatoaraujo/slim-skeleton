@@ -5,13 +5,14 @@
 
 Simple skelleton for [Slim Framework](https://github.com/slimphp/Slim) I did for personal projects.
 
-You can use this skeleton application easily to create your awesome API's or websites.
+You can use this skeleton application easily to create your API's or websites.
 
 Used for this project:
   - [Slim Framework 3](https://github.com/slimphp/Slim)
   - [Slim Twig View](https://github.com/slimphp/Twig-View)
   - [Monolog](https://github.com/Seldaek/monolog)
   - [Doctrine ORM 2](http://www.doctrine-project.org/projects/orm.html)
+  - [Uuid-Doctrine](https://packagist.org/packages/ramsey/uuid-doctrine)
 
 ### Installation
 Update composer.json schema with

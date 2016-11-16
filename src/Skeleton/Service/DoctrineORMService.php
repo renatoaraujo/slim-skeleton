@@ -1,47 +1,144 @@
 <?php
+
 namespace Skeleton\Service;
 
 use Interop\Container\ContainerInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
-//use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Configuration;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Class DoctrineORMService
  * @package Skeleton\Service
- * @todo implement uuid type to handle entity Id https://packagist.org/packages/ramsey/uuid-doctrine
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
  */
 class DoctrineORMService
 {
 
     /**
-     * Invokable constructor method
+     * @var bool isDevelopment
+     */
+    private $isDevelopment = true;
+
+    /**
+     * @var array configOptions
+     */
+    private $configOptions;
+
+    /**
+     * @var array connectionOptions
+     */
+    private $connectionOptions;
+
+    /**
+     * @var array customOptions
+     */
+    private $customOptions;
+
+    /**
+     * __invoke
      * @param ContainerInterface $ci
      * @return EntityManager
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
      */
     public function __invoke(ContainerInterface $ci)
     {
         $settings = $ci->get('settings');
+        $this->isDevelopment = $settings['environment']['isDevelopment'];
+        $this->configOptions = $settings['doctrine']['config'];
+        $this->connectionOptions = $settings['doctrine']['connection'];
 
-        $config = Setup::createAnnotationMetadataConfiguration(
-            $settings['doctrine']['meta']['entity_path'],
-            $settings['doctrine']['meta']['auto_generate_proxies'],
-            $settings['doctrine']['meta']['proxy_dir'],
-            $settings['doctrine']['meta']['cache'],
-            false
-        );
+        if (isset($settings['custom'])) {
+            $this->customOptions = $settings['custom'];
+            $this->applyCustomOption();
+        }
 
-        $entityManager = EntityManager::create(
-            $settings['doctrine']['connection'],
-            $config
-        );
+        $config = new Configuration;
+        $cache = $this->getCacheType($this->configOptions['doctrine.cache.type']);
+        $config->setMetadataCacheImpl($cache);
+        $config->setQueryCacheImpl($cache);
 
+        $driverImpl = $config->newDefaultAnnotationDriver($this->configOptions['doctrine.entity.path']);
+        $config->setMetadataDriverImpl($driverImpl);
+
+        $config->setProxyDir($this->configOptions['doctrine.proxy.dir']);
+        $config->setProxyNamespace($this->configOptions['doctrine.proxy.namespace']);
+
+        if ($this->isDevelopment) {
+            $config->setAutoGenerateProxyClasses(true);
+        } else {
+            $config->setAutoGenerateProxyClasses(false);
+        }
+
+        if (!$this->isDevelopment) {
+            $config->ensureProductionSettings();
+        }
+
+        $entityManager = EntityManager::create($this->connectionOptions, $config);
         return $entityManager;
-//        Type::addType('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
-//        $entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
+    }
+
+    /**
+     * Method to get the relative cache type informed in settings
+     * @param string $cacheType
+     * @return \Doctrine\Common\Cache\RedisCache
+     */
+    private function getCacheType($cacheType = '', $useArrayCacheOnDevelopment = true)
+    {
+
+        if ($useArrayCacheOnDevelopment && $this->isDevelopment) {
+            $cache = new \Doctrine\Common\Cache\ArrayCache();
+        } else {
+            switch ($cacheType) {
+                case 'redis':
+                    $cache = new \Doctrine\Common\Cache\RedisCache();
+                    break;
+
+                case 'apc':
+                    $cache = new \Doctrine\Common\Cache\ApcCache();
+                    break;
+
+                case 'apcu':
+                    $cache = new \Doctrine\Common\Cache\ApcuCache();
+                    break;
+
+                case 'memcache':
+                    $cache = new \Doctrine\Common\Cache\MemcacheCache();
+                    break;
+
+                case 'memcached':
+                    $cache = new \Doctrine\Common\Cache\MemcachedCache();
+                    break;
+
+                default:
+                    $cache = new \Doctrine\Common\Cache\ArrayCache();
+                    break;
+            }
+        }
+
+        return $cache;
+    }
+
+    /**
+     * @todo Apply all available custom options for doctrine.
+     * @return void
+     */
+    private function applyCustomOption()
+    {
+        switch ($this->customOptions) {
+            case 'type':
+                array_walk($this->customOptions['type'], 'self::addType');
+                break;
+        }
+    }
+
+    /**
+     * Add custom type to Doctrine
+     * @param $name
+     * @param $className
+     * @return void
+     */
+    private function addType($name, $className)
+    {
+        Type::addType($name, $className);
     }
 }

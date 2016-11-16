@@ -19,7 +19,7 @@ abstract class SkeletonController implements SkeletonControllerInterface
     /**
      * @var ContainerInterface
      */
-    protected $ci;
+    private $ci;
 
     /**
      * @var ServerRequestInterface $request
@@ -35,6 +35,11 @@ abstract class SkeletonController implements SkeletonControllerInterface
      * @var $urlParams
      */
     protected $urlParams;
+
+    /**
+     * @var service
+     */
+    protected $service;
 
     /**
      * AbstractSkeletonController constructor.
@@ -90,7 +95,7 @@ abstract class SkeletonController implements SkeletonControllerInterface
      * @param null $param
      * @return bool
      */
-    public function getUrlParams($param = null)
+    protected function getUrlParams($param = null)
     {
         $return = false;
 
@@ -105,7 +110,7 @@ abstract class SkeletonController implements SkeletonControllerInterface
         return $return;
     }
 
-    public function setUrlParams(array $params)
+    protected function setUrlParams(array $params)
     {
         $this->urlParams = $params;
         return $this;
@@ -125,12 +130,18 @@ abstract class SkeletonController implements SkeletonControllerInterface
         $this->setReponse($response);
         $this->setUrlParams($urlParams);
 
-        $method = $this->getUrlParams('method');
+        $action = $this->getUrlParams('action');
 
-        if ((bool) $method) {
-            $method = $this->getUrlParams('method') . 'Action';
-            if (method_exists($this, $method)) {
-                $called = $this->$method();
+        if ((bool) $action) {
+            $action = $this->getUrlParams('action') . 'Action';
+            $service = $this->getUrlParams('action') . '.service';
+
+            if ($this->hasService($service)) {
+                $this->service = $service;
+            }
+
+            if (method_exists($this, $action)) {
+                $called = $this->$action();
 
                 if (!$called instanceof ResponseInterface) {
                     throw new SkeletonException('The method MUST resturn ResponseInteface instance');
@@ -144,5 +155,47 @@ abstract class SkeletonController implements SkeletonControllerInterface
         }
 
         return $this->response;
+    }
+
+    /**
+     * Method to get service. Just an alias for ContainerInterface::get()
+     * @param null $service
+     * @return mixed
+     * @throws SkeletonException
+     */
+    protected function getService($service = null)
+    {
+        if (is_null($service)) {
+            $service = $this->service;
+        }
+
+        if (!$this->hasService($service)) {
+            throw new SkeletonException('Error: Unavailable service. ' . $service);
+        }
+
+        $service = $this->ci->get($service);
+
+        return $service;
+    }
+
+    /**
+     * Method to set the default service for controller
+     * @param $service
+     * @return $this
+     */
+    protected function setService($service)
+    {
+        $this->service = $service;
+        return $this;
+    }
+
+    /**
+     * Method to check if has the service. Just an alias for ContainerInterface::has()
+     * @param $service
+     * @return mixed
+     */
+    protected function hasService($service)
+    {
+        return $this->ci->get($service);
     }
 }

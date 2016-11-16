@@ -48,7 +48,6 @@ class Bootstrap extends App
     {
         if (is_array($dependencies) && !empty($dependencies)) {
             foreach ($dependencies as $name => $service) {
-                $name = $this->validateDependencyName($name);
 
                 if (is_array($service) && !empty($service)) {
                     $dependency = $service['dependency'];

@@ -84,7 +84,7 @@ abstract class AbstractEntityService
      */
     protected function getEntityManager()
     {
-        if(empty($this->entityManager)) {
+        if (empty($this->entityManager)) {
             throw new SkeletonException(e::ERR_EM_NOT_SET_MSG, e::ERR_EM_NOT_SET_CODE);
         }
 
@@ -110,7 +110,7 @@ abstract class AbstractEntityService
             $strEntity = $this->strEntity;
         }
 
-        if($strEntity) {
+        if ($strEntity) {
             if ($this->validateGivenClass($strEntity)) {
                 return $this->getEntityManager()->getRepository($strEntity);
             }
@@ -145,7 +145,7 @@ abstract class AbstractEntityService
 
         if (!empty($this->strServiceName)) {
             if ($this->validateGivenClass($this->strServiceName)) {
-                $this->strEntity = str_replace('\Service', '\Entity', $this->strServiceName);
+                $this->strEntity = str_replace('\Service', '\Repository', $this->strServiceName);
                 $this->strEntity = str_replace('Service', '', $this->strServiceName);
             }
 
