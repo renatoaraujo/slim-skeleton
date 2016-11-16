@@ -47,8 +47,8 @@ class DoctrineORMService
         $this->configOptions = $settings['doctrine']['config'];
         $this->connectionOptions = $settings['doctrine']['connection'];
 
-        if (isset($settings['custom'])) {
-            $this->customOptions = $settings['custom'];
+        if (isset($settings['doctrine']['custom'])) {
+            $this->customOptions = $settings['doctrine']['custom'];
             $this->applyCustomOption();
         }
 
@@ -57,7 +57,7 @@ class DoctrineORMService
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
 
-        $driverImpl = $config->newDefaultAnnotationDriver($this->configOptions['doctrine.entity.path']);
+        $driverImpl = $config->newDefaultAnnotationDriver($this->configOptions['doctrine.entity.path'], false);
         $config->setMetadataDriverImpl($driverImpl);
 
         $config->setProxyDir($this->configOptions['doctrine.proxy.dir']);
@@ -124,10 +124,8 @@ class DoctrineORMService
      */
     private function applyCustomOption()
     {
-        switch ($this->customOptions) {
-            case 'type':
-                array_walk($this->customOptions['type'], 'self::addType');
-                break;
+        if (array_key_exists('types', $this->customOptions)) {
+            array_walk($this->customOptions['types'], [$this, 'addType']);
         }
     }
 
@@ -137,8 +135,8 @@ class DoctrineORMService
      * @param $className
      * @return void
      */
-    private function addType($name, $className)
+    private function addType($className, $name)
     {
-        Type::addType($name, $className);
+        return Type::addType($name, $className);
     }
 }
