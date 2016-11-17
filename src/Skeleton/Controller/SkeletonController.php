@@ -160,8 +160,10 @@ abstract class SkeletonController implements SkeletonControllerInterface
     /**
      * Method to get service. Just an alias for ContainerInterface::get()
      * @param null $service
-     * @return mixed
+     * @return mixed|null|service
      * @throws SkeletonException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function getService($service = null)
     {
@@ -193,9 +195,18 @@ abstract class SkeletonController implements SkeletonControllerInterface
      * Method to check if has the service. Just an alias for ContainerInterface::has()
      * @param $service
      * @return mixed
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function hasService($service)
     {
-        return $this->ci->get($service);
+        try {
+            $this->ci->get($service);
+            $hasService = true;
+        } catch (\Slim\Exception\ContainerValueNotFoundException $exception) {
+            $hasService = false;
+        }
+
+        return $hasService;
     }
 }
