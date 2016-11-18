@@ -6,7 +6,6 @@ use Skeleton\Exception\SkeletonException;
 
 /**
  * Object to bootstrap the application
- *
  * @author Renato Rodrigues de Araujo <renato.r.araujo@gmail.com>
  */
 class Bootstrap extends App
@@ -211,18 +210,27 @@ class Bootstrap extends App
     }
 
     /**
-     * addGenericMiddleware
-     * @param array $middlewares
      * @return $this
+     * @throws SkeletonException
      */
-    public function addGenericMiddleware(array $middlewares)
+    public function addGenericMiddleware()
     {
-        if (is_array($middlewares) && !empty($middlewares)) {
-            foreach ($middlewares as $middleware) {
-                $middleware = $this->validateCallable(new $middleware());
-                $this->add($middleware);
-            }
+        $arguments = func_get_args();
+        $middlewares = $arguments[0];
+        $paramsForMiddleWare = $arguments[1];
+
+        if(!is_array($paramsForMiddleWare) && !empty($paramsForMiddleWare)) {
+            throw new SkeletonException('Error: The optional parameters need to be used as array.');
         }
+
+        if (is_array($middlewares) && !empty($middlewares)) {
+            throw new SkeletonException('Error: The middleware need to be used as array.');
+        } else if (!empty($middlewares) && !is_array($middlewares)) {
+            $reflect = new \ReflectionClass($middlewares);
+            $middleware = $this->validateCallable($reflect->newInstanceArgs($paramsForMiddleWare));
+            $this->add($middleware);
+        }
+
         return $this;
     }
 
