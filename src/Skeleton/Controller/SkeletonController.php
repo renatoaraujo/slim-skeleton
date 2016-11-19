@@ -3,10 +3,10 @@
 namespace Skeleton\Controller;
 
 use Interop\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Skeleton\Exception\SkeletonException;
+use Slim\Http\Response;
 
 /**
  * Skeleton Controller
@@ -15,21 +15,20 @@ use Skeleton\Exception\SkeletonException;
  */
 abstract class SkeletonController implements SkeletonControllerInterface
 {
-
     /**
      * @var ContainerInterface
      */
-    private $ci;
+    protected $ci;
 
     /**
      * @var ServerRequestInterface $request
      */
-    private $request;
+    protected $request;
 
     /**
      * @var ResponseInterface $response
      */
-    private $response;
+    protected $response;
 
     /**
      * @var $urlParams
@@ -51,13 +50,86 @@ abstract class SkeletonController implements SkeletonControllerInterface
     }
 
     /**
-     * setRequest
-     * @param $request
-     * @return $this
+     * init
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param $urlParams
+     * @return ResponseInterface
+     * @throws SkeletonException
      */
-    protected function setRequest(ServerRequestInterface $request)
+    public function init(ServerRequestInterface $request, ResponseInterface $response, $urlParams)
     {
-        $this->request = $request;
+        $this->setRequest($request);
+        $this->setReponse($response);
+        $this->setUrlParams($urlParams);
+        $action = $this->getUrlParams('action');
+
+        $calledController = get_called_class();
+        $calledController = explode('\\', $calledController);
+        $controllerDefaultAction = end($calledController);
+        $controllerDefaultAction = strtolower(str_replace('Controller', '', $controllerDefaultAction)) . 'Action';
+
+        if ((bool) $action) {
+            $action = $this->getUrlParams('action') . 'Action';
+            $this->createServiceInstance();
+
+            if (method_exists($this, $action)) {
+                $response = $this->$action();
+            }
+        } elseif (method_exists($this, $controllerDefaultAction)) {
+            $response = $this->$controllerDefaultAction();
+        } else {
+            $response = $this->getResponse()->withStatus(404);
+        }
+
+        return $this->renderResponse($response);
+    }
+
+    /**
+     * renderResponse
+     * @return response
+     * @author Renato Rodrigues de Araujo <renato.araujo@ertic.com.br>
+     */
+    protected function renderResponse(Response $response)
+    {
+        $this->setReponse($response);
+
+        if ($this->getResponse() instanceof ResponseInterface) {
+            $render = $this->getResponse();
+        } else {
+            $render = $this->setNotFound();
+        }
+
+        return $render;
+    }
+
+    /**
+     * setNotFound
+     * @return SkeletonController
+     * @author Renato Rodrigues de Araujo <renato.araujo@ertic.com.br>
+     */
+    protected function setNotFound()
+    {
+        return $this->setReponse($this->getResponse()->withStatus(404));
+    }
+
+    /**
+     * Create service from action name or controller name
+     * @return void
+     * @author Renato Rodrigues de Araujo <renato.araujo@ertic.com.br>
+     */
+    protected function createServiceInstance()
+    {
+        # try to create from action given from routes
+        $serviceFromAction = ucwords($this->getUrlParams('action') . 'Service');
+        $serviceFromController = str_replace('Controller', 'Service', get_called_class());
+
+        if ($this->hasService($serviceFromAction)) {
+            $this->service = $serviceFromAction;
+        } elseif ($this->hasService($serviceFromController)) {
+            $this->service = $serviceFromController;
+        }
+
         return $this;
     }
 
@@ -70,24 +142,6 @@ abstract class SkeletonController implements SkeletonControllerInterface
     {
         $this->response = $response;
         return $this;
-    }
-
-    /**
-     * getRequest
-     * @return request
-     */
-    protected function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * getResponse
-     * @return response
-     */
-    protected function getResponse()
-    {
-        return $this->response;
     }
 
     /**
@@ -110,6 +164,12 @@ abstract class SkeletonController implements SkeletonControllerInterface
         return $return;
     }
 
+    /**
+     * setUrlParams
+     * @param array $params
+     * @return $this
+     * @author Renato Rodrigues de Araujo <renato.araujo@ertic.com.br>
+     */
     protected function setUrlParams(array $params)
     {
         $this->urlParams = $params;
@@ -117,43 +177,30 @@ abstract class SkeletonController implements SkeletonControllerInterface
     }
 
     /**
-     * init
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param $urlParams
-     * @return ResponseInterface
-     * @throws SkeletonException
+     * Method to check if has the service. Just an alias for ContainerInterface::has()
+     * @param $service
+     * @return mixed
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
-    public function init(ServerRequestInterface $request, ResponseInterface $response, $urlParams)
+    protected function hasService($service)
     {
-        $this->setRequest($request);
-        $this->setReponse($response);
-        $this->setUrlParams($urlParams);
-
-        $action = $this->getUrlParams('action');
-
-        if ((bool) $action) {
-            $action = $this->getUrlParams('action') . 'Action';
-            $service = $this->getUrlParams('action') . '.service';
-
-            if ($this->hasService($service)) {
-                $this->service = $service;
-            }
-
-            if (method_exists($this, $action)) {
-                $called = $this->$action();
-
-                if (!$called instanceof ResponseInterface) {
-                    throw new SkeletonException('The method MUST resturn ResponseInteface instance');
-                }
-
-            } else {
-                $this->response = $this->getResponse()->withStatus(404);
-            }
-        } else {
-            $this->defaultAction();
+        try {
+            $this->ci->get($service);
+            $hasService = true;
+        } catch (\Slim\Exception\ContainerValueNotFoundException $exception) {
+            $hasService = false;
         }
 
+        return $hasService;
+    }
+
+    /**
+     * getResponse
+     * @return response
+     */
+    protected function getResponse()
+    {
         return $this->response;
     }
 
@@ -192,21 +239,134 @@ abstract class SkeletonController implements SkeletonControllerInterface
     }
 
     /**
-     * Method to check if has the service. Just an alias for ContainerInterface::has()
-     * @param $service
-     * @return mixed
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @inheritdoc
      */
-    protected function hasService($service)
+    protected function isPost()
     {
-        try {
-            $this->ci->get($service);
-            $hasService = true;
-        } catch (\Slim\Exception\ContainerValueNotFoundException $exception) {
-            $hasService = false;
-        }
+        return $this->getRequest()->isPost();
+    }
 
-        return $hasService;
+    /**
+     * getRequest
+     * @return request
+     */
+    protected function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * setRequest
+     * @param $request
+     * @return $this
+     */
+    protected function setRequest(ServerRequestInterface $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isGet()
+    {
+        return $this->getRequest()->isGet();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isPut()
+    {
+        return $this->getRequest()->isPut();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isDelete()
+    {
+        return $this->getRequest()->isDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isPatch()
+    {
+        return $this->getRequest()->isPatch();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isHead()
+    {
+        return $this->getRequest()->isHead();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isOptions()
+    {
+        return $this->getRequest()->isOptions();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isXhr()
+    {
+        return $this->getRequest()->isXhr();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getUri()
+    {
+        return $this->getRequest()->getUri();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getHeader($headerName)
+    {
+        return $this->getRequest()->getHeader($headerName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getHeaders($headerName)
+    {
+        return $this->getRequest()->getHeaders($headerName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function hasHeader($headerName)
+    {
+        return $this->getRequest()->hasHeader($headerName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getUploadedFiles()
+    {
+        return $this->getRequest()->getUploadedFiles();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getBody()
+    {
+        return $this->getRequest()->getBody();
     }
 }
